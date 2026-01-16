@@ -1,22 +1,11 @@
-/**
- * OPTIMA - Main JavaScript
- * Planificación Empresarial Inteligente
- */
-
 (function() {
     'use strict';
 
-    // =========================================
-    // DOM Elements
-    // =========================================
     const navbar = document.querySelector('.navbar');
     const navCta = document.querySelector('.nav-cta');
     const contactForm = document.querySelector('.contact-form');
     const animatedElements = document.querySelectorAll('.animate-on-scroll');
 
-    // =========================================
-    // Scroll Animation (Intersection Observer)
-    // =========================================
     function initScrollAnimations() {
         const observerOptions = {
             threshold: 0.1,
@@ -36,9 +25,6 @@
         });
     }
 
-    // =========================================
-    // Smooth Scroll for Navigation Links
-    // =========================================
     function initSmoothScroll() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
@@ -59,9 +45,6 @@
         });
     }
 
-    // =========================================
-    // Navbar CTA Button
-    // =========================================
     function initNavCta() {
         if (navCta) {
             navCta.addEventListener('click', function() {
@@ -79,15 +62,11 @@
         }
     }
 
-    // =========================================
-    // Contact Form Handling
-    // =========================================
     function initContactForm() {
         if (contactForm) {
             contactForm.addEventListener('submit', function(e) {
                 e.preventDefault();
 
-                // Get form data
                 const formData = new FormData(this);
                 const data = {
                     nombre: formData.get('nombre'),
@@ -96,7 +75,6 @@
                     mensaje: formData.get('mensaje')
                 };
 
-                // Basic validation
                 if (!data.nombre || !data.email) {
                     showNotification('Por favor completa los campos requeridos.', 'error');
                     return;
@@ -107,37 +85,26 @@
                     return;
                 }
 
-                // Here you would typically send the data to your backend
-                // For now, we'll show a success message
                 console.log('Form data:', data);
 
                 showNotification('¡Gracias por tu interés! Nos pondremos en contacto contigo pronto.', 'success');
 
-                // Reset form
                 this.reset();
             });
         }
     }
 
-    // =========================================
-    // Email Validation
-    // =========================================
     function isValidEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
 
-    // =========================================
-    // Notification System
-    // =========================================
     function showNotification(message, type = 'info') {
-        // Remove existing notification if any
         const existingNotification = document.querySelector('.notification');
         if (existingNotification) {
             existingNotification.remove();
         }
 
-        // Create notification element
         const notification = document.createElement('div');
         notification.className = `notification notification-${type}`;
         notification.innerHTML = `
@@ -145,7 +112,6 @@
             <button class="notification-close">&times;</button>
         `;
 
-        // Add styles dynamically if not exists
         if (!document.querySelector('#notification-styles')) {
             const styles = document.createElement('style');
             styles.id = 'notification-styles';
@@ -198,15 +164,12 @@
             document.head.appendChild(styles);
         }
 
-        // Add to DOM
         document.body.appendChild(notification);
 
-        // Close button functionality
         notification.querySelector('.notification-close').addEventListener('click', () => {
             notification.remove();
         });
 
-        // Auto remove after 5 seconds
         setTimeout(() => {
             if (notification.parentElement) {
                 notification.remove();
@@ -214,9 +177,6 @@
         }, 5000);
     }
 
-    // =========================================
-    // Navbar Scroll Effect
-    // =========================================
     function initNavbarScroll() {
         let lastScroll = 0;
 
@@ -224,7 +184,6 @@
             const currentScroll = window.pageYOffset;
 
             if (navbar) {
-                // Add shadow on scroll
                 if (currentScroll > 50) {
                     navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.3)';
                 } else {
@@ -236,9 +195,6 @@
         });
     }
 
-    // =========================================
-    // Counter Animation for Stats
-    // =========================================
     function initCounterAnimation() {
         const statNumbers = document.querySelectorAll('.stat-number');
 
@@ -281,7 +237,6 @@
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
 
-            // Easing function (ease-out)
             const easeOut = 1 - Math.pow(1 - progress, 3);
             const currentValue = startValue + (endValue - startValue) * easeOut;
 
@@ -304,11 +259,7 @@
         requestAnimationFrame(update);
     }
 
-    // =========================================
-    // Mobile Menu Toggle (for future implementation)
-    // =========================================
     function initMobileMenu() {
-        // This function can be expanded when adding a mobile hamburger menu
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
         const navLinks = document.querySelector('.nav-links');
 
@@ -320,9 +271,6 @@
         }
     }
 
-    // =========================================
-    // Parallax Effect for Background Images
-    // =========================================
     function initParallax() {
         const parallaxSections = document.querySelectorAll('[data-parallax]');
 
@@ -341,9 +289,6 @@
         });
     }
 
-    // =========================================
-    // Initialize All Functions
-    // =========================================
     function init() {
         initScrollAnimations();
         initSmoothScroll();
@@ -355,7 +300,6 @@
         initParallax();
     }
 
-    // Run on DOM ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
