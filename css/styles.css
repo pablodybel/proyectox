@@ -369,6 +369,22 @@ section {
     background-clip: text;
 }
 
+.typewriter {
+    border-right: 3px solid var(--accent-cyan);
+    padding-right: 4px;
+    animation: blink-cursor 0.75s step-end infinite;
+}
+
+.typewriter.done {
+    border-right-color: transparent;
+    animation: none;
+}
+
+@keyframes blink-cursor {
+    0%, 100% { border-right-color: var(--accent-cyan); }
+    50% { border-right-color: transparent; }
+}
+
 .hero-description {
     font-size: 1.2rem;
     color: var(--text-secondary);

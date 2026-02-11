@@ -520,6 +520,51 @@
         preloadFrames();
     }
 
+    function initTypewriter() {
+        const el = document.getElementById('typewriterText');
+        if (!el) return;
+
+        const words = ['inteligentes', 'precisas', 'estratégicas', 'optimizadas'];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typeSpeed = 100;
+        const deleteSpeed = 60;
+        const pauseAfterWord = 2000;
+        const pauseBeforeDelete = 1500;
+
+        function tick() {
+            const currentWord = words[wordIndex];
+
+            if (!isDeleting) {
+                el.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+
+                if (charIndex === currentWord.length) {
+                    setTimeout(() => {
+                        isDeleting = true;
+                        tick();
+                    }, pauseBeforeDelete);
+                    return;
+                }
+                setTimeout(tick, typeSpeed);
+            } else {
+                el.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+
+                if (charIndex === 0) {
+                    isDeleting = false;
+                    wordIndex = (wordIndex + 1) % words.length;
+                    setTimeout(tick, 500);
+                    return;
+                }
+                setTimeout(tick, deleteSpeed);
+            }
+        }
+
+        setTimeout(tick, 1000);
+    }
+
     function init() {
         initScrollAnimations();
         initSmoothScroll();
@@ -531,6 +576,7 @@
         initParallax();
         initHeroFrameAnimation();
         initCtaFrameAnimation();
+        initTypewriter();
     }
 
     if (document.readyState === 'loading') {
