@@ -262,12 +262,42 @@
     function initMobileMenu() {
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
         const navLinks = document.querySelector('.nav-links');
+        const floatingCta = document.querySelector('.floating-cta');
 
         if (mobileMenuBtn && navLinks) {
             mobileMenuBtn.addEventListener('click', () => {
                 navLinks.classList.toggle('active');
                 mobileMenuBtn.classList.toggle('active');
             });
+
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    mobileMenuBtn.classList.remove('active');
+                });
+            });
+        }
+
+        if (floatingCta) {
+            function updateFloatingCta() {
+                if (window.innerWidth <= 768) {
+                    floatingCta.style.display = 'block';
+                } else {
+                    floatingCta.style.display = 'none';
+                }
+            }
+
+            floatingCta.addEventListener('click', () => {
+                const contactSection = document.querySelector('#contacto');
+                if (contactSection) {
+                    const navbarHeight = navbar ? navbar.offsetHeight : 0;
+                    const targetPosition = contactSection.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                }
+            });
+
+            updateFloatingCta();
+            window.addEventListener('resize', updateFloatingCta);
         }
     }
 
