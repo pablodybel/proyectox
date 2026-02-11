@@ -289,6 +289,116 @@
         });
     }
 
+    function initHeroFrameAnimation() {
+        const canvas = document.getElementById('heroCanvas');
+        const scrollContainer = document.querySelector('.hero-scroll-container');
+        const heroContent = document.querySelector('.hero-content');
+        const scrollIndicator = document.querySelector('.hero-scroll-indicator');
+
+        if (!canvas || !scrollContainer) return;
+
+        const ctx = canvas.getContext('2d');
+        const totalFrames = 192;
+        const frames = [];
+        let loadedCount = 0;
+        let currentFrame = 0;
+        let isReady = false;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            if (isReady && frames[currentFrame]) {
+                drawFrame(currentFrame);
+            }
+        }
+
+        function drawFrame(index) {
+            const img = frames[index];
+            if (!img || !img.complete) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const canvasRatio = canvas.width / canvas.height;
+            const imgRatio = img.width / img.height;
+
+            let drawWidth, drawHeight, offsetX, offsetY;
+
+            if (canvasRatio > imgRatio) {
+                drawWidth = canvas.width;
+                drawHeight = canvas.width / imgRatio;
+                offsetX = 0;
+                offsetY = (canvas.height - drawHeight) / 2;
+            } else {
+                drawHeight = canvas.height;
+                drawWidth = canvas.height * imgRatio;
+                offsetX = (canvas.width - drawWidth) / 2;
+                offsetY = 0;
+            }
+
+            ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        }
+
+        function onScroll() {
+            if (!isReady) return;
+
+            const rect = scrollContainer.getBoundingClientRect();
+            const scrollableHeight = scrollContainer.offsetHeight - window.innerHeight;
+            const scrolled = -rect.top;
+            const progress = Math.max(0, Math.min(1, scrolled / scrollableHeight));
+            const frameIndex = Math.min(totalFrames - 1, Math.floor(progress * totalFrames));
+
+            if (frameIndex !== currentFrame && frames[frameIndex]) {
+                currentFrame = frameIndex;
+                requestAnimationFrame(() => drawFrame(currentFrame));
+            }
+
+            if (heroContent) {
+                const fadeStart = 0.6;
+                const fadeEnd = 0.85;
+                if (progress > fadeStart) {
+                    const fadeProgress = Math.min(1, (progress - fadeStart) / (fadeEnd - fadeStart));
+                    heroContent.style.opacity = 1 - fadeProgress;
+                    heroContent.style.transform = `translateY(${-fadeProgress * 60}px)`;
+                } else {
+                    heroContent.style.opacity = '';
+                    heroContent.style.transform = '';
+                }
+            }
+
+            if (scrollIndicator) {
+                const indicatorFade = Math.min(1, progress * 5);
+                scrollIndicator.style.opacity = 1 - indicatorFade;
+            }
+        }
+
+        function preloadFrames() {
+            for (let i = 1; i <= totalFrames; i++) {
+                const img = new Image();
+                const num = String(i).padStart(3, '0');
+                img.src = `assets/img/hero/ezgif-frame-${num}.jpg`;
+                img.onload = () => {
+                    loadedCount++;
+                    if (loadedCount === 1) {
+                        isReady = true;
+                        resizeCanvas();
+                        drawFrame(0);
+                        onScroll();
+                    }
+                    if (loadedCount === totalFrames) {
+                        console.log('All hero frames loaded');
+                    }
+                };
+                frames[i - 1] = img;
+            }
+        }
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        preloadFrames();
+    }
+
     function init() {
         initScrollAnimations();
         initSmoothScroll();
@@ -298,6 +408,7 @@
         initCounterAnimation();
         initMobileMenu();
         initParallax();
+        initHeroFrameAnimation();
     }
 
     if (document.readyState === 'loading') {

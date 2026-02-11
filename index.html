@@ -37,55 +37,28 @@
         <button class="nav-cta">Solicitar Demo</button>
     </nav>
 
-    <section class="hero" id="inicio" data-parallax="0.3">
-        <div class="hero-glow"></div>
+    <div class="hero-scroll-container" id="inicio">
+        <section class="hero">
+            <canvas class="hero-canvas" id="heroCanvas"></canvas>
+            <div class="hero-overlay"></div>
 
-        <div class="hero-content">
-            <div class="hero-badge">
-                <span>Plataforma de Planificación Inteligente</span>
-            </div>
-            <h1>Decisiones más <span class="highlight">inteligentes</span> para tu negocio</h1>
-            <p class="hero-description">Integramos datos de producción, ventas y finanzas para generar pronósticos precisos y simulaciones que optimizan cada recurso de tu organización.</p>
-            <div class="hero-buttons">
-                <button class="btn-primary">Comenzar Ahora</button>
-                <button class="btn-secondary">Ver Demostración</button>
-            </div>
-        </div>
-
-        <div class="hero-visual">
-            <div class="data-orb">
-                <div class="orb-ring"><div class="orb-dot"></div></div>
-                <div class="orb-ring"><div class="orb-dot"></div></div>
-                <div class="orb-ring"><div class="orb-dot"></div></div>
-                <div class="data-streams">
-                    <div class="stream-line"></div>
-                    <div class="stream-line"></div>
-                    <div class="stream-line"></div>
-                    <div class="stream-line"></div>
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span>Plataforma de Planificación Inteligente</span>
+                </div>
+                <h1>Decisiones más <span class="highlight">inteligentes</span> para tu negocio</h1>
+                <p class="hero-description">Integramos datos de producción, ventas y finanzas para generar pronósticos precisos y simulaciones que optimizan cada recurso de tu organización.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary">Comenzar Ahora</button>
+                    <button class="btn-secondary">Ver Demostración</button>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <div class="stats-bar">
-        <div class="stats-grid">
-            <div class="stat-item">
-                <span class="stat-number">+40%</span>
-                <span class="stat-label">Precisión en pronósticos</span>
+            <div class="hero-scroll-indicator">
+                <span>Scroll</span>
+                <div class="scroll-arrow"></div>
             </div>
-            <div class="stat-item">
-                <span class="stat-number">-25%</span>
-                <span class="stat-label">Reducción de inventario</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">3x</span>
-                <span class="stat-label">Velocidad de análisis</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">98%</span>
-                <span class="stat-label">Satisfacción del cliente</span>
-            </div>
-        </div>
+        </section>
     </div>
 
     <section class="services" id="servicios" data-parallax="0.2">
