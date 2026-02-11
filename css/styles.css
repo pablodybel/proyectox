@@ -497,9 +497,9 @@ section {
 
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(5, 1fr);
     gap: 1.5rem;
-    max-width: 1300px;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
@@ -868,9 +868,9 @@ section {
 
 .industries-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.25rem;
-    max-width: 1100px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
@@ -922,72 +922,77 @@ section {
     font-size: 0.85rem;
 }
 
+/* ===== Contact Section with Looping Frame Animation ===== */
 .cta-section {
-    background-color: var(--bg-primary);
-    background-size: cover;
-    background-position: center;
-    text-align: center;
     position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
+    padding: 4rem 2rem;
+    text-align: center;
+    z-index: 10;
 }
 
-.cta-section::before {
-    content: '';
+.cta-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.cta-overlay {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: var(--overlay-primary);
-    z-index: 1;
-}
-
-.cta-section > * {
-    position: relative;
+    background: radial-gradient(ellipse at center, rgba(5, 10, 18, 0.45) 0%, rgba(5, 10, 18, 0.8) 100%);
     z-index: 2;
-}
-
-.cta-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: 150%;
-    background: radial-gradient(ellipse, rgba(0, 229, 255, 0.08) 0%, transparent 60%);
     pointer-events: none;
-    z-index: 1;
 }
 
 .cta-content {
     position: relative;
     z-index: 10;
-    max-width: 700px;
+    max-width: 600px;
     margin: 0 auto;
+    padding: 0 2rem;
 }
 
 .cta-content h2 {
     font-size: clamp(2rem, 4vw, 3rem);
     margin-bottom: 1rem;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
 }
 
 .cta-content p {
     color: var(--text-secondary);
-    font-size: 1.15rem;
-    margin-bottom: 2.5rem;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
 }
 
 .contact-form {
     max-width: 500px;
     margin: 0 auto;
     display: grid;
-    gap: 1rem;
+    gap: 0.85rem;
+    background: rgba(10, 20, 36, 0.65);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 229, 255, 0.12);
+    border-radius: 20px;
+    padding: 2rem;
 }
 
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: 0.85rem;
 }
 
 .form-group {
@@ -1000,22 +1005,23 @@ section {
 
 .form-group label {
     display: block;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
 }
 
 .form-group input,
 .form-group textarea {
     width: 100%;
-    padding: 1rem 1.25rem;
-    background: var(--bg-card);
+    padding: 0.85rem 1rem;
+    background: rgba(18, 31, 56, 0.6);
     border: 1px solid rgba(0, 229, 255, 0.15);
     border-radius: 10px;
     color: var(--text-primary);
     font-family: 'Outfit', sans-serif;
-    font-size: 1rem;
+    font-size: 0.95rem;
     transition: var(--transition-fast);
+    backdrop-filter: blur(10px);
 }
 
 .form-group input:focus,
@@ -1023,15 +1029,16 @@ section {
     outline: none;
     border-color: var(--accent-cyan);
     box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+    background: rgba(18, 31, 56, 0.8);
 }
 
 .form-group textarea {
-    min-height: 120px;
+    min-height: 100px;
     resize: vertical;
 }
 
 .submit-btn {
-    padding: 1.15rem 2.5rem;
+    padding: 1rem 2.5rem;
     background: var(--gradient-main);
     border: none;
     border-radius: 10px;
@@ -1042,7 +1049,7 @@ section {
     cursor: pointer;
     transition: var(--transition-fast);
     box-shadow: 0 4px 25px rgba(0, 229, 255, 0.35);
-    margin-top: 1rem;
+    margin-top: 0.5rem;
 }
 
 .submit-btn:hover {
@@ -1059,9 +1066,9 @@ section {
 }
 
 .footer-content {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     max-width: 1200px;
     margin: 0 auto 3rem;
 }
@@ -1129,13 +1136,10 @@ section {
         max-width: 100%;
     }
 
-    .benefits-container {
-        grid-template-columns: 1fr;
+    .services-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
 
-    .footer-content {
-        grid-template-columns: 1fr 1fr;
-    }
 }
 
 @media (max-width: 768px) {
@@ -1163,7 +1167,11 @@ section {
         font-size: 1rem;
     }
 
-    .stats-grid {
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .industries-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
@@ -1196,7 +1204,8 @@ section {
     }
 
     .footer-content {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+        gap: 2rem;
         text-align: center;
     }
 }

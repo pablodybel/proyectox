@@ -399,6 +399,97 @@
         preloadFrames();
     }
 
+    function initCtaFrameAnimation() {
+        const canvas = document.getElementById('ctaCanvas');
+        const section = document.querySelector('.cta-section');
+
+        if (!canvas || !section) return;
+
+        const ctx = canvas.getContext('2d');
+        const totalFrames = 64;
+        const fps = 24;
+        const interval = 1000 / fps;
+        const frames = [];
+        let loadedCount = 0;
+        let currentFrame = 0;
+        let isReady = false;
+        let lastTime = 0;
+        let animationId = null;
+
+        function resizeCanvas() {
+            canvas.width = section.offsetWidth;
+            canvas.height = section.offsetHeight;
+            if (isReady && frames[currentFrame]) {
+                drawFrame(currentFrame);
+            }
+        }
+
+        function drawFrame(index) {
+            const img = frames[index];
+            if (!img || !img.complete) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const canvasRatio = canvas.width / canvas.height;
+            const imgRatio = img.width / img.height;
+
+            let drawWidth, drawHeight, offsetX, offsetY;
+
+            if (canvasRatio > imgRatio) {
+                drawWidth = canvas.width;
+                drawHeight = canvas.width / imgRatio;
+                offsetX = 0;
+                offsetY = (canvas.height - drawHeight) / 2;
+            } else {
+                drawHeight = canvas.height;
+                drawWidth = canvas.height * imgRatio;
+                offsetX = (canvas.width - drawWidth) / 2;
+                offsetY = 0;
+            }
+
+            ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+        }
+
+        function animate(timestamp) {
+            animationId = requestAnimationFrame(animate);
+
+            if (!isReady) return;
+
+            const delta = timestamp - lastTime;
+            if (delta < interval) return;
+
+            lastTime = timestamp - (delta % interval);
+            currentFrame = (currentFrame + 1) % totalFrames;
+
+            if (frames[currentFrame] && frames[currentFrame].complete) {
+                drawFrame(currentFrame);
+            }
+        }
+
+        function preloadFrames() {
+            for (let i = 1; i <= totalFrames; i++) {
+                const img = new Image();
+                const num = String(i).padStart(3, '0');
+                img.src = `assets/img/section/ezgif-frame-${num}.jpg`;
+                img.onload = () => {
+                    loadedCount++;
+                    if (loadedCount === totalFrames) {
+                        isReady = true;
+                        resizeCanvas();
+                        drawFrame(0);
+                        requestAnimationFrame(animate);
+                    }
+                };
+                frames[i - 1] = img;
+            }
+        }
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        preloadFrames();
+    }
+
     function init() {
         initScrollAnimations();
         initSmoothScroll();
@@ -409,6 +500,7 @@
         initMobileMenu();
         initParallax();
         initHeroFrameAnimation();
+        initCtaFrameAnimation();
     }
 
     if (document.readyState === 'loading') {
